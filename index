@@ -694,6 +694,16 @@ function escapeAttr(s){ return escapeHtml(s); }
   await loadPlants();
   render();
 })();
+
+// Register the service worker so the app can open with no internet connection
+// after the first successful load (your data was already local anyway).
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      // Non-fatal — app still works online, just won't cache for offline use
+    });
+  });
+}
 </script>
 </body>
 </html>
